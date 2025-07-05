@@ -10,7 +10,7 @@
     "build": "tsc",
     "dev": "tsx src/cli.ts",
     "test": "jest",
-    "lint": "eslint src/**/*.ts",
+    "lint": "eslint --config .eslintrc.json src/**/*.ts",
     "format": "prettier --write src/**/*.ts"
   },
   "keywords": [
