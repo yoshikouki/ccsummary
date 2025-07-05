@@ -14,7 +14,7 @@ Claude Codeが使用する `~/.claude` ディレクトリの詳細な構造解�
 - TODOリストのJSON構造
 
 ### 2. [Implementation Insights](./implementation-insights.md)
-t-wadaさんとmizchiさんの設計思想に基づいた、実装上の知見と技術的な発見をまとめています。
+テスト駆動開発の設計思想に基づいた、実装上の知見と技術的な発見をまとめています。
 
 **主な内容:**
 - テスタブルな設計パターン
