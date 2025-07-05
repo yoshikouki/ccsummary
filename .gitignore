@@ -25,5 +25,6 @@ coverage/
 *.swp
 *.swo
 
-# Generated reports (optional - can be tracked for demo)
-reports/
+# Generated reports are saved to ~/ccsummary by default
+# Uncomment if you want to ignore local test reports
+# reports/

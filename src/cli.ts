@@ -18,7 +18,7 @@ program
   .command('generate')
   .description('Generate daily report for Claude Code usage')
   .option('-d, --date <date>', 'Target date (YYYY-MM-DD)', dayjs().format('YYYY-MM-DD'))
-  .option('-o, --output <path>', 'Output directory', './reports')
+  .option('-o, --output <path>', 'Output directory', '~/ccsummary')
   .option('-p, --project <name>', 'Specific project name to analyze')
   .option('--claude-dir <path>', 'Path to .claude directory', '~/.claude')
   .action(async (options) => {

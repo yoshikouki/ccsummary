@@ -1,5 +1,6 @@
 import { writeFile, mkdir } from 'fs/promises';
 import { join, dirname } from 'path';
+import { homedir } from 'os';
 import dayjs from 'dayjs';
 import {
   ClaudeAnalysisResult,
@@ -14,7 +15,10 @@ export async function generateReport(
   analysisResult: ClaudeAnalysisResult,
   options: ReportOptions
 ): Promise<string> {
-  const reportDir = join(options.outputDir, dayjs(options.date).format('YYYY-MM'));
+  const resolvedOutputDir = options.outputDir.startsWith('~') 
+    ? join(homedir(), options.outputDir.slice(1))
+    : options.outputDir;
+  const reportDir = join(resolvedOutputDir, dayjs(options.date).format('YYYY-MM'));
   await mkdir(reportDir, { recursive: true });
 
   const reportFileName = `claude-code-summary-${options.date}.md`;

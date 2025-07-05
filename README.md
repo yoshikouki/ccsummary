@@ -36,7 +36,7 @@ npx ccsummary@latest generate --date 2025-07-05
 npx ccsummary@latest generate --project myproject
 
 # 出力ディレクトリを指定
-npx ccsummary@latest generate --output ./my-reports
+npx ccsummary@latest generate --output ~/my-reports
 ```
 
 ### プロジェクト一覧の確認
@@ -51,7 +51,7 @@ npx ccsummary@latest list
 #### generate コマンド
 
 - `-d, --date <date>`: 対象日付 (YYYY-MM-DD形式、デフォルト: 今日)
-- `-o, --output <path>`: 出力ディレクトリ (デフォルト: ./reports)
+- `-o, --output <path>`: 出力ディレクトリ (デフォルト: ~/ccsummary)
 - `-p, --project <name>`: 特定プロジェクト名でフィルタリング
 - `--claude-dir <path>`: .claude ディレクトリのパス (デフォルト: ~/.claude)
 
