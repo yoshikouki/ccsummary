@@ -48,6 +48,17 @@ export interface ReportOptions {
   projectFilter?: string;
 }
 
+export interface ReportStructure {
+  summaryPath: string;
+  promptsPath: string;
+  todoPath: string;
+}
+
+export interface GeneratedReports {
+  all: ReportStructure;
+  projects: Map<string, ReportStructure>;
+}
+
 export interface ProjectSummary {
   name: string;
   path: string;

@@ -1,0 +1,166 @@
+import React, { useState, useEffect } from 'react';
+import { Text, Box, Newline } from 'ink';
+import { ClaudeAnalysisResult, ClaudeProject } from '../types';
+
+interface SummaryDashboardProps {
+  analysisResult: ClaudeAnalysisResult;
+  targetDate: string;
+}
+
+const SummaryDashboard: React.FC<SummaryDashboardProps> = ({
+  analysisResult,
+  targetDate,
+}) => {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString('ja-JP', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'long',
+    });
+  };
+
+  const getMostActiveProject = (): ClaudeProject | null => {
+    if (analysisResult.projects.length === 0) return null;
+    return analysisResult.projects.reduce((max, project) =>
+      project.totalMessages > max.totalMessages ? project : max
+    );
+  };
+
+  const calculateProductivityScore = (): number => {
+    const baseScore = Math.min(analysisResult.totalMessages / 100, 1) * 40;
+    const projectBonus = Math.min(analysisResult.projects.length, 5) * 10;
+    const sessionBonus = Math.min(analysisResult.totalSessions, 10) * 5;
+    return Math.round(baseScore + projectBonus + sessionBonus);
+  };
+
+  const mostActiveProject = getMostActiveProject();
+  const productivityScore = calculateProductivityScore();
+
+  return (
+    <Box flexDirection="column" padding={1}>
+      {/* Header */}
+      <Box>
+        <Text color="cyan" bold>
+          📊 Claude Code 集計ダッシュボード
+        </Text>
+      </Box>
+      <Box>
+        <Text color="gray">
+          現在時刻: {currentTime.toLocaleTimeString('ja-JP')}
+        </Text>
+      </Box>
+      <Newline />
+
+      {/* Date Info */}
+      <Box>
+        <Text color="yellow" bold>
+          📅 対象日: {formatDate(targetDate)}
+        </Text>
+      </Box>
+      <Newline />
+
+      {/* Main Stats */}
+      <Box flexDirection="column" borderStyle="round" borderColor="blue" paddingX={2}>
+        <Text color="blue" bold>
+          🎯 基本統計
+        </Text>
+        <Box justifyContent="space-between">
+          <Text>プロジェクト数:</Text>
+          <Text color="green" bold>
+            {analysisResult.projects.length}
+          </Text>
+        </Box>
+        <Box justifyContent="space-between">
+          <Text>セッション数:</Text>
+          <Text color="green" bold>
+            {analysisResult.totalSessions}
+          </Text>
+        </Box>
+        <Box justifyContent="space-between">
+          <Text>メッセージ数:</Text>
+          <Text color="green" bold>
+            {analysisResult.totalMessages}
+          </Text>
+        </Box>
+        <Box justifyContent="space-between">
+          <Text>生産性スコア:</Text>
+          <Text color={productivityScore >= 80 ? 'green' : productivityScore >= 50 ? 'yellow' : 'red'} bold>
+            {productivityScore}/100
+          </Text>
+        </Box>
+      </Box>
+      <Newline />
+
+      {/* Most Active Project */}
+      {mostActiveProject && (
+        <>
+          <Box flexDirection="column" borderStyle="round" borderColor="green" paddingX={2}>
+            <Text color="green" bold>
+              🚀 最も活発なプロジェクト
+            </Text>
+            <Box justifyContent="space-between">
+              <Text>プロジェクト名:</Text>
+              <Text color="cyan" bold>
+                {mostActiveProject.name}
+              </Text>
+            </Box>
+            <Box justifyContent="space-between">
+              <Text>メッセージ数:</Text>
+              <Text color="green" bold>
+                {mostActiveProject.totalMessages}
+              </Text>
+            </Box>
+            <Box justifyContent="space-between">
+              <Text>セッション数:</Text>
+              <Text color="green" bold>
+                {mostActiveProject.totalSessions}
+              </Text>
+            </Box>
+          </Box>
+          <Newline />
+        </>
+      )}
+
+      {/* Project List */}
+      <Box flexDirection="column" borderStyle="round" borderColor="magenta" paddingX={2}>
+        <Text color="magenta" bold>
+          📁 プロジェクト一覧
+        </Text>
+        {analysisResult.projects.map((project, index) => (
+          <Box key={project.path} justifyContent="space-between">
+            <Text>
+              {index + 1}. {project.name}
+            </Text>
+            <Text color="gray">
+              {project.totalMessages}msg / {project.totalSessions}sess
+            </Text>
+          </Box>
+        ))}
+        {analysisResult.projects.length === 0 && (
+          <Text color="gray">この日は活動がありませんでした</Text>
+        )}
+      </Box>
+      <Newline />
+
+      {/* Footer */}
+      <Box justifyContent="center">
+        <Text color="gray" italic>
+          🤖 Generated by ccsummary - Press Ctrl+C to exit
+        </Text>
+      </Box>
+    </Box>
+  );
+};
+
+export default SummaryDashboard;
