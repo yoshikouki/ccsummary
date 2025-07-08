@@ -49,7 +49,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
             todos.push({ ...todo, projectName: project.name });
           });
         } catch (error) {
-          // エラーは無視
+          // Ignore errors
         }
       }
     }
@@ -73,7 +73,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
   const renderTabBar = () => (
     <Box marginBottom={1}>
       {(['overview', 'prompts', 'todos'] as TabType[]).map((tab, index) => {
-        const tabNames = { overview: '概要', prompts: 'プロンプト', todos: 'TODO' };
+        const tabNames = { overview: 'Overview', prompts: 'Prompts', todos: 'TODO' };
         const isActive = activeTab === tab;
         return (
           <Box key={tab} marginRight={2}>
@@ -98,22 +98,22 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
       <Box flexDirection="column">
         <Box borderStyle="round" borderColor="green" padding={1} marginBottom={1}>
           <Box flexDirection="column">
-            <Text color="green" bold>📊 全体統計</Text>
+            <Text color="green" bold>📊 Overall Statistics</Text>
             <Box justifyContent="space-between">
-              <Text>プロジェクト数:</Text>
+              <Text>Projects:</Text>
               <Text color="cyan" bold>{analysisResult.projects.length}</Text>
             </Box>
             <Box justifyContent="space-between">
-              <Text>セッション数:</Text>
+              <Text>Sessions:</Text>
               <Text color="cyan" bold>{analysisResult.totalSessions}</Text>
             </Box>
             <Box justifyContent="space-between">
-              <Text>メッセージ数:</Text>
+              <Text>Messages:</Text>
               <Text color="cyan" bold>{analysisResult.totalMessages}</Text>
             </Box>
             {todosLoaded && (
               <Box justifyContent="space-between">
-                <Text>タスク完了率:</Text>
+                <Text>Task Completion Rate:</Text>
                 <Text color="yellow" bold>
                   {allTodos.length > 0 ? Math.round((completedTodos.length / allTodos.length) * 100) : 0}%
                 </Text>
@@ -124,7 +124,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
 
         <Box borderStyle="round" borderColor="blue" padding={1}>
           <Box flexDirection="column">
-            <Text color="blue" bold>📂 プロジェクト別詳細</Text>
+            <Text color="blue" bold>📂 Project Details</Text>
             {analysisResult.projects.map((project, index) => (
               <Box key={project.path} justifyContent="space-between">
                 <Text>{index + 1}. {project.name}</Text>
@@ -146,7 +146,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
       <Box flexDirection="column">
         <Box marginBottom={1}>
           <Text color="yellow" bold>
-            💬 プロンプト一覧 ({userMessages.length}件)
+            💬 Prompt List ({userMessages.length} items)
           </Text>
         </Box>
         
@@ -200,7 +200,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
       <Box flexDirection="column">
         <Box marginBottom={1}>
           <Text color="green" bold>
-            ✅ 完了済み ({completedTodos.length}件)
+            ✅ Completed ({completedTodos.length} items)
           </Text>
         </Box>
         
@@ -216,7 +216,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
           <>
             <Box marginTop={1} marginBottom={1}>
               <Text color="yellow" bold>
-                🔄 進行中 ({inProgressTodos.length}件)
+                🔄 In Progress ({inProgressTodos.length} items)
               </Text>
             </Box>
             {inProgressTodos.map((todo, index) => (
@@ -233,7 +233,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
           <>
             <Box marginTop={1} marginBottom={1}>
               <Text color="red" bold>
-                ⏳ 未着手 ({pendingTodos.length}件)
+                ⏳ Pending ({pendingTodos.length} items)
               </Text>
             </Box>
             {pendingTodos.slice(0, 5).map((todo, index) => (

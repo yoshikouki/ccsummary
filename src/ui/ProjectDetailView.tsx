@@ -95,7 +95,7 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
         );
         projectTodos.push(...sessionTodos);
       } catch (error) {
-        // エラーは無視
+        // Ignore errors
       }
     }
     setTodos(projectTodos);
@@ -110,10 +110,10 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
     <Box marginBottom={1}>
       {(['sessions', 'messages', 'conversation', 'search'] as ViewMode[]).map((mode, index) => {
         const modeNames = { 
-          sessions: 'セッション', 
-          messages: 'メッセージ', 
-          conversation: '会話',
-          search: '検索'
+          sessions: 'Sessions', 
+          messages: 'Messages', 
+          conversation: 'Conversation',
+          search: 'Search'
         };
         const isActive = viewMode === mode;
         return (
@@ -136,8 +136,8 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
       <Box flexDirection="column">
         <Text color="gray">
           {detailLevel === 'list' 
-            ? "↑↓/j/k: 選択  Enter: 詳細  1-4: モード切り替え"
-            : "↑↓/j/k: スクロール  Esc/b: 戻る"
+            ? "↑↓/j/k: Select  Enter: Details  1-4: Switch Mode"
+            : "↑↓/j/k: Scroll  Esc/b: Back"
           }
         </Text>
       </Box>
@@ -148,7 +148,7 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
     <Box flexDirection="column">
       <Box marginBottom={1}>
         <Text color="blue" bold>
-          📁 セッション一覧 ({project.sessions.length}件)
+          📁 Session List ({project.sessions.length} items)
         </Text>
       </Box>
       
@@ -170,7 +170,7 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
                   Session {index + 1}
                 </Text>
                 <Text color="gray">
-                  {session.messageCount} messages • {duration}分
+                  {session.messageCount} messages • {duration} min
                 </Text>
               </Box>
               <Box justifyContent="space-between">
@@ -184,9 +184,9 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
               {isSelected && session.messages.length > 0 && (
                 <Box marginTop={1}>
                   <Text color="yellow">
-                    最初のメッセージ: {typeof session.messages[0].content === 'string' 
+                    First message: {typeof session.messages[0].content === 'string' 
                       ? session.messages[0].content.substring(0, 60) + '...'
-                      : '[複雑なコンテンツ]'
+                      : '[Complex content]'
                     }
                   </Text>
                 </Box>
@@ -200,7 +200,7 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
 
   const renderSessionDetail = () => {
     if (!currentSession) {
-      return <Text color="red">セッションが見つかりません</Text>;
+      return <Text color="red">Session not found</Text>;
     }
 
     return (
@@ -208,24 +208,24 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
         <Box borderStyle="double" borderColor="cyan" padding={1} marginBottom={1}>
           <Box flexDirection="column">
             <Text color="cyan" bold>
-              📋 Session {selectedSessionIndex + 1} 詳細
+              📋 Session {selectedSessionIndex + 1} Details
             </Text>
             <Box justifyContent="space-between">
-              <Text>開始時刻:</Text>
+              <Text>Start Time:</Text>
               <Text color="yellow">{dayjs(currentSession.startTime).format('YYYY-MM-DD HH:mm:ss')}</Text>
             </Box>
             <Box justifyContent="space-between">
-              <Text>終了時刻:</Text>
+              <Text>End Time:</Text>
               <Text color="yellow">{dayjs(currentSession.endTime).format('YYYY-MM-DD HH:mm:ss')}</Text>
             </Box>
             <Box justifyContent="space-between">
-              <Text>メッセージ数:</Text>
+              <Text>Messages:</Text>
               <Text color="cyan">{currentSession.messageCount}</Text>
             </Box>
             <Box justifyContent="space-between">
-              <Text>継続時間:</Text>
+              <Text>Duration:</Text>
               <Text color="green">
-                {dayjs(currentSession.endTime).diff(dayjs(currentSession.startTime), 'minute')}分
+                {dayjs(currentSession.endTime).diff(dayjs(currentSession.startTime), 'minute')} min
               </Text>
             </Box>
           </Box>
@@ -234,7 +234,7 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
         <Box borderStyle="single" borderColor="blue" padding={1}>
           <Box flexDirection="column">
             <Box marginBottom={1}>
-              <Text color="blue" bold>💬 会話の流れ</Text>
+              <Text color="blue" bold>💬 Conversation Flow</Text>
             </Box>
             {currentSession.messages.slice(0, 10).map((message, index) => {
               const content = typeof message.content === 'string' 
@@ -259,7 +259,7 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
               );
             })}
             {currentSession.messages.length > 10 && (
-              <Text color="gray">...他 {currentSession.messages.length - 10} メッセージ</Text>
+              <Text color="gray">...and {currentSession.messages.length - 10} more messages</Text>
             )}
           </Box>
         </Box>
@@ -271,7 +271,7 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
     <Box flexDirection="column">
       <Box marginBottom={1}>
         <Text color="green" bold>
-          💬 ユーザーメッセージ一覧 ({userMessages.length}件)
+          💬 User Message List ({userMessages.length} items)
         </Text>
       </Box>
       
@@ -318,14 +318,14 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
 
   const renderConversationView = () => {
     if (!currentSession) {
-      return <Text color="red">セッションが選択されていません</Text>;
+      return <Text color="red">No session selected</Text>;
     }
 
     return (
       <Box flexDirection="column">
         <Box marginBottom={1}>
           <Text color="purple" bold>
-            🗣️ 会話詳細 - Session {selectedSessionIndex + 1}
+            🗣️ Conversation Details - Session {selectedSessionIndex + 1}
           </Text>
         </Box>
         
@@ -368,16 +368,16 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
     <Box flexDirection="column">
       <Box marginBottom={1}>
         <Text color="red" bold>
-          🔍 検索機能 (実装予定)
+          🔍 Search Function (Coming Soon)
         </Text>
       </Box>
       <Box borderStyle="single" borderColor="yellow" padding={1}>
         <Box flexDirection="column">
-          <Text color="yellow">近日実装予定の機能:</Text>
-          <Text>• キーワード検索</Text>
-          <Text>• 日付範囲フィルター</Text>
-          <Text>• メッセージタイプフィルター</Text>
-          <Text>• 正規表現サポート</Text>
+          <Text color="yellow">Features coming soon:</Text>
+          <Text>• Keyword search</Text>
+          <Text>• Date range filter</Text>
+          <Text>• Message type filter</Text>
+          <Text>• Regular expression support</Text>
         </Box>
       </Box>
     </Box>
@@ -415,11 +415,11 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
       <Box borderStyle="double" borderColor="magenta" padding={1} marginBottom={1}>
         <Box flexDirection="column">
           <Text color="magenta" bold>
-            🔍 {project.name} - 詳細探索
+            🔍 {project.name} - Detailed Exploration
           </Text>
           <Box justifyContent="space-between">
-            <Text>総セッション: {project.sessions.length}</Text>
-            <Text>総メッセージ: {project.totalMessages}</Text>
+            <Text>Total Sessions: {project.sessions.length}</Text>
+            <Text>Total Messages: {project.totalMessages}</Text>
             <Text>TODOs: {todos.length}</Text>
           </Box>
         </Box>

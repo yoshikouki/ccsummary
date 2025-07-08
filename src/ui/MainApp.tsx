@@ -90,13 +90,13 @@ const MainApp: React.FC<MainAppProps> = ({ analysisResult, targetDate }) => {
   const getCurrentTitle = () => {
     switch (viewMode) {
       case 'selector':
-        return '📁 プロジェクト選択';
+        return '📁 Project Selection';
       case 'all-projects':
-        return '🌐 全プロジェクト横断ビュー';
+        return '🌐 All Projects Cross-View';
       case 'single-project':
         return `📂 ${selectedProject}`;
       case 'project-detail':
-        return `🔍 ${selectedProject} - 詳細`;
+        return `🔍 ${selectedProject} - Details`;
       default:
         return 'Claude Code Summary';
     }
@@ -127,7 +127,7 @@ const MainApp: React.FC<MainAppProps> = ({ analysisResult, targetDate }) => {
           </Box>
           <Box justifyContent="center">
             <Text color="yellow">
-              {getCurrentTitle()} - {new Date(targetDate).toLocaleDateString('ja-JP')}
+              {getCurrentTitle()} - {new Date(targetDate).toLocaleDateString('en-US')}
             </Text>
           </Box>
         </Box>

@@ -22,7 +22,7 @@ const SummaryDashboard: React.FC<SummaryDashboardProps> = ({
   }, []);
 
   const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString('ja-JP', {
+    return new Date(date).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -37,27 +37,19 @@ const SummaryDashboard: React.FC<SummaryDashboardProps> = ({
     );
   };
 
-  const calculateProductivityScore = (): number => {
-    const baseScore = Math.min(analysisResult.totalMessages / 100, 1) * 40;
-    const projectBonus = Math.min(analysisResult.projects.length, 5) * 10;
-    const sessionBonus = Math.min(analysisResult.totalSessions, 10) * 5;
-    return Math.round(baseScore + projectBonus + sessionBonus);
-  };
-
   const mostActiveProject = getMostActiveProject();
-  const productivityScore = calculateProductivityScore();
 
   return (
     <Box flexDirection="column" padding={1}>
       {/* Header */}
       <Box>
         <Text color="cyan" bold>
-          📊 Claude Code 集計ダッシュボード
+          📊 Claude Code Summary Dashboard
         </Text>
       </Box>
       <Box>
         <Text color="gray">
-          現在時刻: {currentTime.toLocaleTimeString('ja-JP')}
+          Current Time: {currentTime.toLocaleTimeString('en-US')}
         </Text>
       </Box>
       <Newline />
@@ -65,7 +57,7 @@ const SummaryDashboard: React.FC<SummaryDashboardProps> = ({
       {/* Date Info */}
       <Box>
         <Text color="yellow" bold>
-          📅 対象日: {formatDate(targetDate)}
+          📅 Target Date: {formatDate(targetDate)}
         </Text>
       </Box>
       <Newline />
@@ -73,30 +65,24 @@ const SummaryDashboard: React.FC<SummaryDashboardProps> = ({
       {/* Main Stats */}
       <Box flexDirection="column" borderStyle="round" borderColor="blue" paddingX={2}>
         <Text color="blue" bold>
-          🎯 基本統計
+          🎯 Basic Statistics
         </Text>
         <Box justifyContent="space-between">
-          <Text>プロジェクト数:</Text>
+          <Text>Projects:</Text>
           <Text color="green" bold>
             {analysisResult.projects.length}
           </Text>
         </Box>
         <Box justifyContent="space-between">
-          <Text>セッション数:</Text>
+          <Text>Sessions:</Text>
           <Text color="green" bold>
             {analysisResult.totalSessions}
           </Text>
         </Box>
         <Box justifyContent="space-between">
-          <Text>メッセージ数:</Text>
+          <Text>Messages:</Text>
           <Text color="green" bold>
             {analysisResult.totalMessages}
-          </Text>
-        </Box>
-        <Box justifyContent="space-between">
-          <Text>生産性スコア:</Text>
-          <Text color={productivityScore >= 80 ? 'green' : productivityScore >= 50 ? 'yellow' : 'red'} bold>
-            {productivityScore}/100
           </Text>
         </Box>
       </Box>
@@ -107,22 +93,22 @@ const SummaryDashboard: React.FC<SummaryDashboardProps> = ({
         <>
           <Box flexDirection="column" borderStyle="round" borderColor="green" paddingX={2}>
             <Text color="green" bold>
-              🚀 最も活発なプロジェクト
+              🚀 Most Active Project
             </Text>
             <Box justifyContent="space-between">
-              <Text>プロジェクト名:</Text>
+              <Text>Project Name:</Text>
               <Text color="cyan" bold>
                 {mostActiveProject.name}
               </Text>
             </Box>
             <Box justifyContent="space-between">
-              <Text>メッセージ数:</Text>
+              <Text>Messages:</Text>
               <Text color="green" bold>
                 {mostActiveProject.totalMessages}
               </Text>
             </Box>
             <Box justifyContent="space-between">
-              <Text>セッション数:</Text>
+              <Text>Sessions:</Text>
               <Text color="green" bold>
                 {mostActiveProject.totalSessions}
               </Text>
@@ -135,7 +121,7 @@ const SummaryDashboard: React.FC<SummaryDashboardProps> = ({
       {/* Project List */}
       <Box flexDirection="column" borderStyle="round" borderColor="magenta" paddingX={2}>
         <Text color="magenta" bold>
-          📁 プロジェクト一覧
+          📁 Project List
         </Text>
         {analysisResult.projects.map((project, index) => (
           <Box key={project.path} justifyContent="space-between">
@@ -148,7 +134,7 @@ const SummaryDashboard: React.FC<SummaryDashboardProps> = ({
           </Box>
         ))}
         {analysisResult.projects.length === 0 && (
-          <Text color="gray">この日は活動がありませんでした</Text>
+          <Text color="gray">No activity on this day</Text>
         )}
       </Box>
       <Newline />

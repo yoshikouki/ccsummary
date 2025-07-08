@@ -16,7 +16,7 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({
 }) => {
   const items = [
     {
-      label: '🌐 全プロジェクト横断ビュー',
+      label: '🌐 All Projects Cross-View',
       value: '__all__',
     },
     ...projects.map(project => ({
@@ -37,21 +37,21 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({
     <Box flexDirection="column" padding={1}>
       <Box marginBottom={1}>
         <Text color="green" bold>
-          📋 表示するプロジェクトを選択してください
+          📋 Please select a project to display
         </Text>
       </Box>
 
       {projects.length === 0 ? (
         <Box borderStyle="round" borderColor="yellow" padding={1}>
           <Text color="yellow">
-            この日は活動がありませんでした。別の日付を試してください。
+            No activity on this day. Please try another date.
           </Text>
         </Box>
       ) : (
         <>
           <Box marginBottom={1}>
             <Text color="blue">
-              {projects.length}個のプロジェクトが見つかりました：
+              {projects.length} projects found:
             </Text>
           </Box>
 
@@ -60,10 +60,10 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({
           <Box marginTop={2} borderStyle="round" borderColor="blue" padding={1}>
             <Box flexDirection="column">
               <Text color="blue" bold>
-                💡 表示オプション
+                💡 Display Options
               </Text>
-              <Text>• 全プロジェクト横断: 全体の統計とプロンプト・TODO一覧</Text>
-              <Text>• 個別プロジェクト: 特定プロジェクトの詳細情報</Text>
+              <Text>• All Projects: Overall statistics and prompts/TODO list</Text>
+              <Text>• Individual Project: Detailed information for a specific project</Text>
             </Box>
           </Box>
         </>

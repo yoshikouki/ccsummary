@@ -43,7 +43,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate }) => {
         );
         projectTodos.push(...sessionTodos);
       } catch (error) {
-        // エラーは無視
+        // Ignore errors
       }
     }
     setTodos(projectTodos);
@@ -62,7 +62,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate }) => {
   const renderTabBar = () => (
     <Box marginBottom={1}>
       {(['overview', 'prompts', 'todos'] as TabType[]).map((tab, index) => {
-        const tabNames = { overview: '概要', prompts: 'プロンプト', todos: 'TODO' };
+        const tabNames = { overview: 'Overview', prompts: 'Prompts', todos: 'TODO' };
         const isActive = activeTab === tab;
         return (
           <Box key={tab} marginRight={2}>
@@ -87,26 +87,26 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate }) => {
       <Box flexDirection="column">
         <Box borderStyle="round" borderColor="green" padding={1} marginBottom={1}>
           <Box flexDirection="column">
-            <Text color="green" bold>📊 プロジェクト情報</Text>
+            <Text color="green" bold>📊 Project Information</Text>
             <Box justifyContent="space-between">
-              <Text>プロジェクト名:</Text>
+              <Text>Project Name:</Text>
               <Text color="cyan" bold>{project.name}</Text>
             </Box>
             <Box justifyContent="space-between">
-              <Text>セッション数:</Text>
+              <Text>Sessions:</Text>
               <Text color="cyan" bold>{project.totalSessions}</Text>
             </Box>
             <Box justifyContent="space-between">
-              <Text>メッセージ数:</Text>
+              <Text>Messages:</Text>
               <Text color="cyan" bold>{project.totalMessages}</Text>
             </Box>
             <Box justifyContent="space-between">
-              <Text>最終活動:</Text>
+              <Text>Last Activity:</Text>
               <Text color="yellow">{dayjs(project.lastActivity).format('YYYY-MM-DD HH:mm')}</Text>
             </Box>
             {todosLoaded && (
               <Box justifyContent="space-between">
-                <Text>タスク完了率:</Text>
+                <Text>Task Completion Rate:</Text>
                 <Text color="yellow" bold>
                   {todos.length > 0 ? Math.round((completedTodos.length / todos.length) * 100) : 0}%
                 </Text>
@@ -117,7 +117,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate }) => {
 
         <Box borderStyle="round" borderColor="blue" padding={1} marginBottom={1}>
           <Box flexDirection="column">
-            <Text color="blue" bold>🚀 セッション詳細</Text>
+            <Text color="blue" bold>🚀 Session Details</Text>
             {project.sessions.map((session, index) => (
               <Box key={session.id} flexDirection="column" marginBottom={1}>
                 <Box justifyContent="space-between">
@@ -137,7 +137,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate }) => {
         {userMessages.length > 0 && (
           <Box borderStyle="round" borderColor="yellow" padding={1}>
             <Box flexDirection="column">
-              <Text color="yellow" bold>💡 最近の主な活動</Text>
+              <Text color="yellow" bold>💡 Recent Main Activities</Text>
               {userMessages.slice(-3).map((message, index) => {
                 const content = typeof message.content === 'string' 
                   ? message.content 
@@ -169,7 +169,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate }) => {
       <Box flexDirection="column">
         <Box marginBottom={1}>
           <Text color="yellow" bold>
-            💬 プロンプト詳細 ({userMessages.length}件)
+            💬 Prompt Details ({userMessages.length} items)
           </Text>
         </Box>
         
@@ -197,7 +197,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate }) => {
         
         {userMessages.length === 0 && (
           <Box>
-            <Text color="gray">この日はプロンプトがありませんでした。</Text>
+            <Text color="gray">No prompts on this day.</Text>
           </Box>
         )}
       </Box>
@@ -223,7 +223,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate }) => {
           <>
             <Box marginBottom={1}>
               <Text color="green" bold>
-                ✅ 完了済み ({completedTodos.length}件)
+                ✅ Completed ({completedTodos.length} items)
               </Text>
             </Box>
             
@@ -244,7 +244,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate }) => {
           <>
             <Box marginTop={1} marginBottom={1}>
               <Text color="yellow" bold>
-                🔄 進行中 ({inProgressTodos.length}件)
+                🔄 In Progress ({inProgressTodos.length} items)
               </Text>
             </Box>
             {inProgressTodos.map((todo, index) => (
@@ -264,7 +264,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate }) => {
           <>
             <Box marginTop={1} marginBottom={1}>
               <Text color="red" bold>
-                ⏳ 未着手 ({pendingTodos.length}件)
+                ⏳ Pending ({pendingTodos.length} items)
               </Text>
             </Box>
             {pendingTodos.map((todo, index) => (
@@ -282,7 +282,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate }) => {
 
         {todos.length === 0 && (
           <Box>
-            <Text color="gray">このプロジェクトにはTODOがありません。</Text>
+            <Text color="gray">No TODOs in this project.</Text>
           </Box>
         )}
       </Box>
