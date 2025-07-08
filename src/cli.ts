@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { generateReport } from './core/reporter';
-import { analyzeClaudeDirectory } from './core/analyzer';
+import { generateReport } from './core/reporter.js';
+import { analyzeClaudeDirectory } from './core/analyzer.js';
 import chalk from 'chalk';
 import ora from 'ora';
 import dayjs from 'dayjs';
@@ -15,10 +15,10 @@ program
   .description('Claude Code usage summary generator')
   .version('1.0.0')
   .action(async () => {
-    // Default action - run interactive mode
+    // Default action - run dashboard
     const { render } = await import('ink');
     const React = await import('react');
-    const MainApp = (await import('./ui/MainApp.js')).default;
+    const SummaryDashboard = (await import('./ui/SummaryDashboard.js')).default;
     
     const spinner = ora('Loading Claude Code data...').start();
     
@@ -26,7 +26,7 @@ program
       const analysisResult = await analyzeClaudeDirectory('~/.claude');
       spinner.stop();
       
-      render(React.createElement(MainApp, {
+      render(React.createElement(SummaryDashboard, {
         analysisResult,
         targetDate: dayjs().format('YYYY-MM-DD')
       }));
@@ -141,6 +141,33 @@ program
       const SummaryDashboard = (await import('./ui/SummaryDashboard.js')).default;
       
       render(React.createElement(SummaryDashboard, {
+        analysisResult,
+        targetDate: options.date
+      }));
+      
+    } catch (error) {
+      spinner.fail(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('interactive')
+  .description('Show interactive project selector with navigation')
+  .option('-d, --date <date>', 'Target date (YYYY-MM-DD)', dayjs().format('YYYY-MM-DD'))
+  .option('--claude-dir <path>', 'Path to .claude directory', '~/.claude')
+  .action(async (options) => {
+    const spinner = ora('Loading Claude Code data...').start();
+    
+    try {
+      const analysisResult = await analyzeClaudeDirectory(options.claudeDir, options.date);
+      spinner.stop();
+      
+      const { render } = await import('ink');
+      const React = await import('react');
+      const MainApp = (await import('./ui/MainApp.js')).default;
+      
+      render(React.createElement(MainApp, {
         analysisResult,
         targetDate: options.date
       }));

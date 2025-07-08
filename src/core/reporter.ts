@@ -10,8 +10,8 @@ import {
   ClaudeMessage,
   GeneratedReports,
   ReportStructure,
-} from '../types';
-import { loadTodos } from './analyzer';
+} from '../types/index.js';
+import { loadTodos } from './analyzer.js';
 
 export async function generateReport(
   analysisResult: ClaudeAnalysisResult,

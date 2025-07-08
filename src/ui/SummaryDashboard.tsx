@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, Box, Newline } from 'ink';
-import { ClaudeAnalysisResult, ClaudeProject } from '../types';
+import { ClaudeAnalysisResult, ClaudeProject } from '../types/index.js';
 
 interface SummaryDashboardProps {
   analysisResult: ClaudeAnalysisResult;

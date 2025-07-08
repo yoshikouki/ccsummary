@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Text } from 'ink';
 import SelectInput from 'ink-select-input';
-import { ClaudeProject } from '../types';
+import { ClaudeProject } from '../types/index.js';
 
 interface ProjectSelectorProps {
   projects: ClaudeProject[];

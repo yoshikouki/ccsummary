@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Text, useInput } from 'ink';
-import { ClaudeProject, ClaudeMessage } from '../types';
-import { loadTodos } from '../core/analyzer';
+import { ClaudeProject, ClaudeMessage } from '../types/index.js';
+import { loadTodos } from '../core/analyzer.js';
 import dayjs from 'dayjs';
 
 interface ProjectViewProps {

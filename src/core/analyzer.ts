@@ -8,7 +8,7 @@ import {
   ClaudeSession,
   ClaudeMessage,
   TodoItem,
-} from '../types';
+} from '../types/index.js';
 
 export async function analyzeClaudeDirectory(
   claudeDir: string,

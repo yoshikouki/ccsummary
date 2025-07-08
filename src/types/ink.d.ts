@@ -31,12 +31,19 @@ declare module 'ink' {
   export interface AppContext {
     exit(): void;
   }
+
+  export interface StdinContext {
+    stdin: NodeJS.ReadStream;
+    setRawMode: (value: boolean) => void;
+    isRawModeSupported: boolean;
+  }
   
   export const Box: React.FC<BoxProps>;
   export const Text: React.FC<TextProps>;
   export const Newline: React.FC;
   export function useInput(handler: (input: string, key: any) => void): void;
   export function useApp(): AppContext;
+  export function useStdin(): StdinContext;
 }
 
 declare module 'ink-select-input' {
