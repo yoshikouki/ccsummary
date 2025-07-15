@@ -14,6 +14,9 @@ Claude Code の使用状況を分析して日報を生成するCLIツールで�
 - 📈 統計情報の表示
 - 🎯 特定プロジェクトへのフィルタリング
 - 📅 日付指定での分析
+- 🖥️ インタラクティブなTUIダッシュボード
+- 🔍 詳細なプロジェクト探索機能
+- ⚡ リアルタイムダッシュボード
 
 ## インストール
 
@@ -23,41 +26,103 @@ npm install -g ccsummary
 
 ## 使用方法
 
+### インタラクティブモード（推奨）
+
+```bash
+# デフォルト：インタラクティブモード（TTY環境）またはダッシュボード
+ccsummary
+
+# 明示的にインタラクティブモードを起動
+ccsummary interactive
+
+# ダッシュボードモードを起動
+ccsummary dashboard
+
+# 特定の日付でダッシュボードを表示
+ccsummary dashboard --date 2025-07-05
+```
+
 ### 基本的な使用方法
 
 ```bash
 # 今日の日報を生成
-npx ccsummary@latest generate
+ccsummary generate
 
 # 特定の日付の日報を生成
-npx ccsummary@latest generate --date 2025-07-05
+ccsummary generate --date 2025-07-05
 
 # 特定のプロジェクトのみの日報を生成
-npx ccsummary@latest generate --project myproject
+ccsummary generate --project myproject
 
 # 出力ディレクトリを指定
-npx ccsummary@latest generate --output ~/my-reports
+ccsummary generate --output ~/my-reports
 ```
 
 ### プロジェクト一覧の確認
 
 ```bash
 # 利用可能なプロジェクトを一覧表示
-npx ccsummary@latest list
+ccsummary list
 ```
 
-### オプション一覧
+### コマンド一覧
+
+#### デフォルトコマンド
+```bash
+ccsummary  # インタラクティブモード（TTY環境）またはダッシュボード
+```
+
+#### interactive コマンド
+```bash
+ccsummary interactive [options]
+```
+- `-d, --date <date>`: 対象日付 (YYYY-MM-DD形式、デフォルト: 今日)
+- `--claude-dir <path>`: .claude ディレクトリのパス (デフォルト: ~/.claude)
+
+#### dashboard コマンド
+```bash
+ccsummary dashboard [options]
+```
+- `-d, --date <date>`: 対象日付 (YYYY-MM-DD形式、デフォルト: 今日)
+- `-p, --project <name>`: 特定プロジェクト名でフィルタリング
+- `--claude-dir <path>`: .claude ディレクトリのパス (デフォルト: ~/.claude)
 
 #### generate コマンド
-
+```bash
+ccsummary generate [options]
+```
 - `-d, --date <date>`: 対象日付 (YYYY-MM-DD形式、デフォルト: 今日)
 - `-o, --output <path>`: 出力ディレクトリ (デフォルト: ~/ccsummary)
 - `-p, --project <name>`: 特定プロジェクト名でフィルタリング
 - `--claude-dir <path>`: .claude ディレクトリのパス (デフォルト: ~/.claude)
 
 #### list コマンド
-
+```bash
+ccsummary list [options]
+```
 - `--claude-dir <path>`: .claude ディレクトリのパス (デフォルト: ~/.claude)
+
+## TUI機能
+
+### インタラクティブモード
+- 📁 プロジェクト選択画面
+- 🌐 全プロジェクト統合表示
+- 📂 個別プロジェクト詳細表示
+- 🔍 プロジェクト詳細探索
+
+### 各プロジェクトで確認できる情報
+- 📊 概要（統計情報、セッション詳細、最近の活動）
+- 💬 プロンプト詳細（全ユーザーメッセージ）
+- ✅ TODO管理（完了・進行中・未着手）
+- 🗣️ 対話詳細（セッション別メッセージ表示）
+
+### キーボードショートカット
+- `↑↓` / `j/k`: 移動
+- `Enter`: 選択/詳細表示
+- `1-3`: タブ切り替え
+- `b` / `Backspace`: 戻る
+- `d`: 詳細表示（プロジェクト画面で）
+- `q` / `Escape`: 終了
 
 ## 出力例
 

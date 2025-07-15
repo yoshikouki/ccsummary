@@ -7,12 +7,13 @@ import dayjs from 'dayjs';
 interface ProjectDetailViewProps {
   project: ClaudeProject;
   targetDate: string;
+  terminalHeight?: number;
 }
 
 type ViewMode = 'sessions' | 'messages' | 'conversation' | 'search';
 type DetailLevel = 'list' | 'detail';
 
-const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDate }) => {
+const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDate, terminalHeight = 24 }) => {
   const [viewMode, setViewMode] = useState<ViewMode>('sessions');
   const [detailLevel, setDetailLevel] = useState<DetailLevel>('list');
   const [selectedSessionIndex, setSelectedSessionIndex] = useState(0);
@@ -158,7 +159,7 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
         
         return (
           <Box
-            key={session.id}
+            key={`session-list-${session.id}-${index}`}
             borderStyle={isSelected ? "double" : "single"}
             borderColor={isSelected ? "cyan" : "gray"}
             padding={1}
@@ -236,14 +237,14 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
             <Box marginBottom={1}>
               <Text color="blue" bold>💬 Conversation Flow</Text>
             </Box>
-            {currentSession.messages.slice(0, 10).map((message, index) => {
+            {currentSession.messages.slice(0, Math.max(3, terminalHeight - 12)).map((message, index) => {
               const content = typeof message.content === 'string' 
                 ? message.content 
                 : JSON.stringify(message.content);
               const isUser = message.role === 'user';
               
               return (
-                <Box key={index} marginBottom={1}>
+                <Box key={`session-detail-${message.uuid || index}-${message.timestamp}`} marginBottom={1}>
                   <Box flexDirection="column">
                     <Box justifyContent="space-between">
                       <Text color={isUser ? "green" : "blue"} bold>
@@ -258,8 +259,8 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
                 </Box>
               );
             })}
-            {currentSession.messages.length > 10 && (
-              <Text color="gray">...and {currentSession.messages.length - 10} more messages</Text>
+            {currentSession.messages.length > Math.max(3, terminalHeight - 12) && (
+              <Text color="gray">...and {currentSession.messages.length - Math.max(3, terminalHeight - 12)} more messages</Text>
             )}
           </Box>
         </Box>
@@ -283,7 +284,7 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
         
         return (
           <Box
-            key={`${message.sessionId}-${index}`}
+            key={`message-list-${message.sessionId}-${message.uuid || index}`}
             borderStyle={isSelected ? "double" : "single"}
             borderColor={isSelected ? "green" : "gray"}
             padding={1}
@@ -338,7 +339,7 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
           
           return (
             <Box
-              key={index}
+              key={`conversation-${message.uuid || index}-${message.timestamp}`}
               borderStyle={isSelected ? "double" : "single"}
               borderColor={isSelected ? "purple" : (isUser ? "green" : "blue")}
               padding={1}
@@ -426,7 +427,9 @@ const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({ project, targetDa
       </Box>
 
       {renderModeSelector()}
-      {renderContent()}
+      <Box flexGrow={1} flexDirection="column">
+        {renderContent()}
+      </Box>
       {renderNavigationHelp()}
     </Box>
   );

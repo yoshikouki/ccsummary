@@ -15,21 +15,31 @@ program
   .description('Claude Code usage summary generator')
   .version('1.0.0')
   .action(async () => {
-    // Default action - run dashboard
-    const { render } = await import('ink');
-    const React = await import('react');
-    const SummaryDashboard = (await import('./ui/SummaryDashboard.js')).default;
-    
+    // Default action - run interactive mode if TTY is available, otherwise dashboard
     const spinner = ora('Loading Claude Code data...').start();
     
     try {
       const analysisResult = await analyzeClaudeDirectory('~/.claude');
       spinner.stop();
       
-      render(React.createElement(SummaryDashboard, {
-        analysisResult,
-        targetDate: dayjs().format('YYYY-MM-DD')
-      }));
+      const { render } = await import('ink');
+      const React = await import('react');
+      
+      if (process.stdin.isTTY) {
+        // Run interactive mode
+        const MainApp = (await import('./ui/MainApp.js')).default;
+        render(React.createElement(MainApp, {
+          analysisResult,
+          targetDate: dayjs().format('YYYY-MM-DD')
+        }));
+      } else {
+        // Run dashboard
+        const SummaryDashboard = (await import('./ui/SummaryDashboard.js')).default;
+        render(React.createElement(SummaryDashboard, {
+          analysisResult,
+          targetDate: dayjs().format('YYYY-MM-DD')
+        }));
+      }
       
     } catch (error) {
       spinner.fail(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -162,6 +172,16 @@ program
     try {
       const analysisResult = await analyzeClaudeDirectory(options.claudeDir, options.date);
       spinner.stop();
+      
+      // Check if TTY is available
+      if (!process.stdin.isTTY) {
+        console.log(chalk.yellow('⚠️  Interactive mode requires a TTY terminal.'));
+        console.log(chalk.blue('Use the following commands instead:'));
+        console.log('  ccsummary generate  - Generate reports');
+        console.log('  ccsummary list      - List projects');
+        console.log('  ccsummary dashboard - View dashboard');
+        process.exit(1);
+      }
       
       const { render } = await import('ink');
       const React = await import('react');

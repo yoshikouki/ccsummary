@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 interface AllProjectsViewProps {
   analysisResult: ClaudeAnalysisResult;
   targetDate: string;
+  terminalHeight?: number;
 }
 
 type TabType = 'overview' | 'prompts' | 'todos';
@@ -14,6 +15,7 @@ type TabType = 'overview' | 'prompts' | 'todos';
 const AllProjectsView: React.FC<AllProjectsViewProps> = ({
   analysisResult,
   targetDate,
+  terminalHeight = 24,
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const [allTodos, setAllTodos] = useState<any[]>([]);
@@ -126,7 +128,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
           <Box flexDirection="column">
             <Text color="blue" bold>📂 Project Details</Text>
             {analysisResult.projects.map((project, index) => (
-              <Box key={project.path} justifyContent="space-between">
+              <Box key={`project-${project.name}-${project.path}-${index}`} justifyContent="space-between">
                 <Text>{index + 1}. {project.name}</Text>
                 <Text color="gray">
                   {project.totalMessages}msg / {project.totalSessions}sess
@@ -141,6 +143,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
 
   const renderPrompts = () => {
     const userMessages = getAllUserMessages();
+    const maxVisibleItems = Math.max(3, terminalHeight - 8); // More conservative calculation
     
     return (
       <Box flexDirection="column">
@@ -150,7 +153,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
           </Text>
         </Box>
         
-        {userMessages.slice(0, 10).map((message, index) => {
+        {userMessages.slice(0, maxVisibleItems).map((message, index) => {
           const content = typeof message.content === 'string' 
             ? message.content 
             : JSON.stringify(message.content);
@@ -159,7 +162,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
             : content;
             
           return (
-            <Box key={`${message.sessionId}-${index}`} flexDirection="column" marginBottom={1}>
+            <Box key={`prompt-${message.projectName}-${message.sessionId}-${message.uuid || index}-${message.timestamp}`} flexDirection="column" marginBottom={1}>
               <Box>
                 <Text color="blue" bold>
                   [{message.projectName}] {dayjs(message.timestamp).format('HH:mm')}
@@ -172,10 +175,10 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
           );
         })}
         
-        {userMessages.length > 10 && (
+        {userMessages.length > maxVisibleItems && (
           <Box marginTop={1}>
             <Text color="gray">
-              ... and {userMessages.length - 10} more prompts
+              ... and {userMessages.length - maxVisibleItems} more prompts
             </Text>
           </Box>
         )}
@@ -195,6 +198,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
     const completedTodos = allTodos.filter(t => t.status === 'completed');
     const inProgressTodos = allTodos.filter(t => t.status === 'in_progress');
     const pendingTodos = allTodos.filter(t => t.status === 'pending');
+    const maxItemsPerSection = Math.max(2, Math.floor((terminalHeight - 10) / 3)); // Divide space between sections
 
     return (
       <Box flexDirection="column">
@@ -204,8 +208,8 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
           </Text>
         </Box>
         
-        {completedTodos.slice(0, 5).map((todo, index) => (
-          <Box key={`completed-${index}`} marginBottom={1}>
+        {completedTodos.slice(0, maxItemsPerSection).map((todo, index) => (
+          <Box key={`completed-${todo.projectName}-${todo.id || index}-${todo.content.substring(0, 20)}`} marginBottom={1}>
             <Text>
               <Text color="green">✓</Text> [{todo.projectName}] {todo.content}
             </Text>
@@ -220,7 +224,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
               </Text>
             </Box>
             {inProgressTodos.map((todo, index) => (
-              <Box key={`progress-${index}`} marginBottom={1}>
+              <Box key={`progress-${todo.projectName}-${todo.id || index}-${todo.content.substring(0, 20)}`} marginBottom={1}>
                 <Text>
                   <Text color="yellow">◐</Text> [{todo.projectName}] {todo.content}
                 </Text>
@@ -236,8 +240,8 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
                 ⏳ Pending ({pendingTodos.length} items)
               </Text>
             </Box>
-            {pendingTodos.slice(0, 5).map((todo, index) => (
-              <Box key={`pending-${index}`} marginBottom={1}>
+            {pendingTodos.slice(0, maxItemsPerSection).map((todo, index) => (
+              <Box key={`pending-${todo.projectName}-${todo.id || index}-${todo.content.substring(0, 20)}`} marginBottom={1}>
                 <Text>
                   <Text color="red">○</Text> [{todo.projectName}] {todo.content}
                 </Text>
@@ -265,7 +269,9 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
   return (
     <Box flexDirection="column" padding={1}>
       {renderTabBar()}
-      {renderActiveTab()}
+      <Box flexGrow={1} flexDirection="column">
+        {renderActiveTab()}
+      </Box>
     </Box>
   );
 };
