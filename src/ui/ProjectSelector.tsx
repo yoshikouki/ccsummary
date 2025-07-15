@@ -6,7 +6,7 @@ import { ClaudeProject } from '../types/index.js';
 interface ProjectSelectorProps {
   projects: ClaudeProject[];
   onSelectAll: () => void;
-  onSelectProject: (projectName: string) => void;
+  onSelectProject: (projectIndex: number) => void;
 }
 
 const ProjectSelector: React.FC<ProjectSelectorProps> = ({
@@ -19,9 +19,9 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({
       label: '🌐 All Projects Cross-View',
       value: '__all__',
     },
-    ...projects.map(project => ({
+    ...projects.map((project, index) => ({
       label: `📂 ${project.name} (${project.totalMessages}msg, ${project.totalSessions}sess)`,
-      value: project.name,
+      value: `project-${index}`, // Use index as unique identifier
     })),
   ];
 
@@ -29,7 +29,11 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({
     if (item.value === '__all__') {
       onSelectAll();
     } else {
-      onSelectProject(item.value);
+      // Extract project by index
+      const projectIndex = parseInt(item.value.replace('project-', ''));
+      if (projectIndex >= 0 && projectIndex < projects.length) {
+        onSelectProject(projectIndex);
+      }
     }
   };
 

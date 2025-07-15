@@ -124,7 +124,7 @@ const SummaryDashboard: React.FC<SummaryDashboardProps> = ({
           📁 Project List
         </Text>
         {analysisResult.projects.map((project, index) => (
-          <Box key={project.path} justifyContent="space-between">
+          <Box key={`dashboard-project-${project.name}-${project.path}-${index}`} justifyContent="space-between">
             <Text>
               {index + 1}. {project.name}
             </Text>
