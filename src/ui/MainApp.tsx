@@ -16,7 +16,7 @@ type ViewMode = 'selector' | 'all-projects' | 'single-project' | 'project-detail
 
 const MainApp: React.FC<MainAppProps> = ({ analysisResult, targetDate }) => {
   const [viewMode, setViewMode] = useState<ViewMode>('selector');
-  const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
+  const [selectedProjectPath, setSelectedProjectPath] = useState<string | null>(null);
   const { exit } = useApp();
   const { stdin, isRawModeSupported } = useStdin();
   const terminalSize = useTerminalSize();
@@ -29,7 +29,7 @@ const MainApp: React.FC<MainAppProps> = ({ analysisResult, targetDate }) => {
       if (key.backspace || input === 'b') {
         if (viewMode === 'single-project' || viewMode === 'project-detail') {
           setViewMode('selector');
-          setSelectedProjectIndex(null);
+          setSelectedProjectPath(null);
         } else if (viewMode === 'all-projects') {
           setViewMode('selector');
         }
@@ -46,8 +46,8 @@ const MainApp: React.FC<MainAppProps> = ({ analysisResult, targetDate }) => {
     setViewMode('all-projects');
   };
 
-  const handleSelectProject = (projectIndex: number) => {
-    setSelectedProjectIndex(projectIndex);
+  const handleSelectProject = (projectPath: string) => {
+    setSelectedProjectPath(projectPath);
     setViewMode('single-project');
   };
 
@@ -77,7 +77,7 @@ const MainApp: React.FC<MainAppProps> = ({ analysisResult, targetDate }) => {
           />
         );
       case 'single-project':
-        const project = selectedProjectIndex !== null ? analysisResult.projects[selectedProjectIndex] : null;
+        const project = selectedProjectPath ? analysisResult.projects.find(p => p.path === selectedProjectPath) : null;
         return project ? (
           <ProjectView
             project={project}
@@ -88,7 +88,7 @@ const MainApp: React.FC<MainAppProps> = ({ analysisResult, targetDate }) => {
           <Text color="red">Project not found</Text>
         );
       case 'project-detail':
-        const detailProject = selectedProjectIndex !== null ? analysisResult.projects[selectedProjectIndex] : null;
+        const detailProject = selectedProjectPath ? analysisResult.projects.find(p => p.path === selectedProjectPath) : null;
         return detailProject ? (
           <ProjectDetailView
             project={detailProject}
@@ -110,10 +110,10 @@ const MainApp: React.FC<MainAppProps> = ({ analysisResult, targetDate }) => {
       case 'all-projects':
         return '🌐 All Projects Cross-View';
       case 'single-project':
-        const currentProject = selectedProjectIndex !== null ? analysisResult.projects[selectedProjectIndex] : null;
+        const currentProject = selectedProjectPath ? analysisResult.projects.find(p => p.path === selectedProjectPath) : null;
         return `📂 ${currentProject?.name || 'Unknown'}`;
       case 'project-detail':
-        const currentDetailProject = selectedProjectIndex !== null ? analysisResult.projects[selectedProjectIndex] : null;
+        const currentDetailProject = selectedProjectPath ? analysisResult.projects.find(p => p.path === selectedProjectPath) : null;
         return `🔍 ${currentDetailProject?.name || 'Unknown'} - Details`;
       default:
         return 'Claude Code Summary';

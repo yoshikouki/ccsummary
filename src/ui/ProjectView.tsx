@@ -120,7 +120,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate, terminal
           <Box flexDirection="column">
             <Text color="blue" bold>🚀 Session Details</Text>
             {project.sessions.map((session, index) => (
-              <Box key={`session-${project.name}-${session.id}-${index}`} flexDirection="column" marginBottom={1}>
+              <Box key={`session-${session.id}-${index}`} flexDirection="column" marginBottom={1}>
                 <Box justifyContent="space-between">
                   <Text>Session {index + 1}:</Text>
                   <Text color="gray">{session.messageCount} messages</Text>
@@ -148,7 +148,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate, terminal
                   : content;
                   
                 return (
-                  <Box key={`activity-${project.name}-${message.uuid || index}-${message.timestamp}-${index}`} flexDirection="column" marginBottom={1}>
+                  <Box key={`activity-${message.uuid || index}-${message.timestamp}-${index}`} flexDirection="column" marginBottom={1}>
                     <Text color="gray">
                       {dayjs(message.timestamp).format('HH:mm')}
                     </Text>
@@ -180,7 +180,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate, terminal
             : JSON.stringify(message.content);
             
           return (
-            <Box key={`prompt-${project.name}-${message.sessionId}-${message.uuid || index}-${message.timestamp}`} flexDirection="column" marginBottom={2}>
+            <Box key={`prompt-${message.sessionId}-${message.uuid || index}-${message.timestamp}`} flexDirection="column" marginBottom={2}>
               <Box borderStyle="single" borderColor="blue" padding={1}>
                 <Box flexDirection="column">
                   <Box justifyContent="space-between">
@@ -229,7 +229,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate, terminal
             </Box>
             
             {completedTodos.map((todo, index) => (
-              <Box key={`completed-${project.name}-${todo.id || index}-${todo.content.substring(0, 20)}-${index}`} marginBottom={1} borderStyle="single" borderColor="green" padding={1}>
+              <Box key={`completed-${todo.id || index}-${todo.content.substring(0, 20)}-${index}`} marginBottom={1} borderStyle="single" borderColor="green" padding={1}>
                 <Box flexDirection="column">
                   <Box justifyContent="space-between">
                     <Text color="green">✓ {todo.content}</Text>
@@ -249,7 +249,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate, terminal
               </Text>
             </Box>
             {inProgressTodos.map((todo, index) => (
-              <Box key={`progress-${project.name}-${todo.id || index}-${todo.content.substring(0, 20)}-${index}`} marginBottom={1} borderStyle="single" borderColor="yellow" padding={1}>
+              <Box key={`progress-${todo.id || index}-${todo.content.substring(0, 20)}-${index}`} marginBottom={1} borderStyle="single" borderColor="yellow" padding={1}>
                 <Box flexDirection="column">
                   <Box justifyContent="space-between">
                     <Text color="yellow">◐ {todo.content}</Text>
@@ -269,7 +269,7 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, targetDate, terminal
               </Text>
             </Box>
             {pendingTodos.map((todo, index) => (
-              <Box key={`pending-${project.name}-${todo.id || index}-${todo.content.substring(0, 20)}-${index}`} marginBottom={1} borderStyle="single" borderColor="red" padding={1}>
+              <Box key={`pending-${todo.id || index}-${todo.content.substring(0, 20)}-${index}`} marginBottom={1} borderStyle="single" borderColor="red" padding={1}>
                 <Box flexDirection="column">
                   <Box justifyContent="space-between">
                     <Text color="red">○ {todo.content}</Text>

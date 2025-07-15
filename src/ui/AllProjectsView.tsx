@@ -128,7 +128,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
           <Box flexDirection="column">
             <Text color="blue" bold>📂 Project Details</Text>
             {analysisResult.projects.map((project, index) => (
-              <Box key={`project-${project.name}-${project.path}-${index}`} justifyContent="space-between">
+              <Box key={`project-${project.path}`} justifyContent="space-between">
                 <Text>{index + 1}. {project.name}</Text>
                 <Text color="gray">
                   {project.totalMessages}msg / {project.totalSessions}sess
@@ -162,7 +162,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
             : content;
             
           return (
-            <Box key={`prompt-${message.projectName}-${message.sessionId}-${message.uuid || index}-${message.timestamp}`} flexDirection="column" marginBottom={1}>
+            <Box key={`prompt-${message.sessionId}-${message.uuid || index}-${message.timestamp}`} flexDirection="column" marginBottom={1}>
               <Box>
                 <Text color="blue" bold>
                   [{message.projectName}] {dayjs(message.timestamp).format('HH:mm')}
@@ -209,7 +209,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
         </Box>
         
         {completedTodos.slice(0, maxItemsPerSection).map((todo, index) => (
-          <Box key={`completed-${todo.projectName}-${todo.id || index}-${todo.content.substring(0, 20)}`} marginBottom={1}>
+          <Box key={`completed-${todo.id || index}-${todo.content.substring(0, 20)}`} marginBottom={1}>
             <Text>
               <Text color="green">✓</Text> [{todo.projectName}] {todo.content}
             </Text>
@@ -224,7 +224,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
               </Text>
             </Box>
             {inProgressTodos.map((todo, index) => (
-              <Box key={`progress-${todo.projectName}-${todo.id || index}-${todo.content.substring(0, 20)}`} marginBottom={1}>
+              <Box key={`progress-${todo.id || index}-${todo.content.substring(0, 20)}`} marginBottom={1}>
                 <Text>
                   <Text color="yellow">◐</Text> [{todo.projectName}] {todo.content}
                 </Text>
@@ -241,7 +241,7 @@ const AllProjectsView: React.FC<AllProjectsViewProps> = ({
               </Text>
             </Box>
             {pendingTodos.slice(0, maxItemsPerSection).map((todo, index) => (
-              <Box key={`pending-${todo.projectName}-${todo.id || index}-${todo.content.substring(0, 20)}`} marginBottom={1}>
+              <Box key={`pending-${todo.id || index}-${todo.content.substring(0, 20)}`} marginBottom={1}>
                 <Text>
                   <Text color="red">○</Text> [{todo.projectName}] {todo.content}
                 </Text>
