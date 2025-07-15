@@ -20,8 +20,20 @@ Claude Code の使用状況を分析して日報を生成するCLIツールで�
 
 ## インストール
 
+### npm/pnpm経由（推奨）
 ```bash
 npm install -g ccsummary
+# または
+pnpm add -g ccsummary
+```
+
+### 開発版
+```bash
+git clone https://github.com/yoshikouki/ccsummary.git
+cd ccsummary
+pnpm install
+pnpm build
+pnpm link --global
 ```
 
 ## 使用方法
@@ -134,7 +146,16 @@ ccsummary list [options]
 
 ## 開発
 
+### 必要環境
+- Node.js >=20.0.0
+- pnpm (推奨) または npm
+
+### セットアップ
 ```bash
+# リポジトリをクローン
+git clone https://github.com/yoshikouki/ccsummary.git
+cd ccsummary
+
 # 依存関係のインストール
 pnpm install
 
@@ -154,10 +175,54 @@ pnpm lint
 pnpm format
 ```
 
+### プロジェクト構造
+```
+src/
+├── cli.ts              # CLIエントリーポイント
+├── core/
+│   ├── analyzer.ts     # Claude データ解析エンジン
+│   └── reporter.ts     # レポート生成
+├── types/
+│   └── index.ts        # TypeScript型定義
+├── ui/                 # React Ink UI コンポーネント
+│   ├── MainApp.tsx
+│   ├── ProjectView.tsx
+│   └── ...
+└── utils/              # ユーティリティ関数
+```
+
+### 技術スタック
+- **TypeScript**: 型安全な開発
+- **React Ink**: ターミナル UI
+- **Commander.js**: CLI フレームワーク
+- **Jest**: テスト
+- **ESLint + Prettier**: コード品質
+- **dayjs**: 日付操作
+
 ## ライセンス
 
 MIT
 
 ## 貢献
 
-プルリクエストやIssueを歓迎します。
+### Issue報告
+バグ報告や機能要求は [GitHub Issues](https://github.com/yoshikouki/ccsummary/issues) でお願いします。
+
+### プルリクエスト
+1. このリポジトリをフォーク
+2. 機能ブランチを作成 (`git checkout -b feature/amazing-feature`)
+3. 変更をコミット (`git commit -m 'Add amazing feature'`)
+4. ブランチにプッシュ (`git push origin feature/amazing-feature`)
+5. プルリクエストを作成
+
+### 開発に参加する前に
+- テストを実行して既存機能が正常に動作することを確認
+- ESLint・Prettierでコードフォーマットを統一
+- 新機能には適切なテストを追加
+
+## サポート
+
+質問や問題がある場合は、以下の方法でお問い合わせください：
+
+- [GitHub Issues](https://github.com/yoshikouki/ccsummary/issues) でバグ報告・機能要求
+- [GitHub Discussions](https://github.com/yoshikouki/ccsummary/discussions) で質問・議論
